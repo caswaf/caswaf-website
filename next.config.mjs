@@ -56,6 +56,8 @@ function redirects() {
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
+  // The images are a few small logos; Vercel's image optimization is billed per image and fails with 402 when the quota runs out.
+  images: { unoptimized: true },
   redirects: async () => redirects(),
 };
 
