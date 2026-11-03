@@ -14,8 +14,9 @@ description: "CasWAF的规则如何工作：规则类型，把规则挂到站点
 | `URL Path` | 路径，不含查询字符串 | [User-Agent和URL路径](./user-agent-and-path.md) |
 | `IP Rate Limiting` | 同一地址每秒的请求数 | [限流](./rate-limiting.md) |
 | `WAF` | ModSecurity的SecLang规则，由Coraza运行 | [WAF规则](./waf.md) |
+| `Compound` | 其他规则，以`and`和`or`组合 | 见下文 |
 
-一条规则包含一个或多个表达式（**Expressions**）。对`IP`、`User-Agent`和`URL Path`来说，任何一个表达式匹配，规则就匹配；要同时满足几个条件，见下面关于组合规则的说明。
+一条规则包含一个或多个表达式（**Expressions**）。对`IP`、`User-Agent`和`URL Path`来说，任何一个表达式匹配，规则就匹配；要同时满足几个条件，请用组合规则。
 
 ## 动作
 
@@ -51,4 +52,12 @@ description: "CasWAF的规则如何工作：规则类型，把规则挂到站点
 
 ## 组合规则
 
-规则编辑器里还有`Compound`类型，用来以`and`和`or`组合其他规则。它正在重做：目前组合规则把每个请求都算作匹配，所以它的动作会作用于所有流量。暂时不要把它挂到站点上；见[路线图](../more/roadmap.md)。
+`Compound`规则在其他规则的某种组合匹配时匹配，然后执行它自己的动作。每个表达式指定一条规则，写成`<owner>/<name>`，第一个表达式的**Logic**为`begin`，之后为`and`或`or`。被引用的规则只算匹配或不匹配，它们自己的动作会被忽略。
+
+`and`的优先级高于`or`，所以`A and B or C and D`表示`(A and B) or (C and D)`。例如，要让打开登录页的境外访客先通过验证码：
+
+1. 一条`IP`规则`admin/abroad`，运算符`is abroad`。
+2. 一条`URL Path`规则`admin/login-page`，运算符`match`，值`^/login`。
+3. 一条`Compound`规则，表达式为`begin admin/abroad`和`and admin/login-page`，动作`CAPTCHA`。只把这一条挂到站点上。
+
+组合规则可以引用其他组合规则，最多八层。最终引用到自己的组合规则会返回错误，而不会陷入循环。

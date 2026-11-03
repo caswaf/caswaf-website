@@ -11,10 +11,10 @@ description: "在站点前面加一道Casdoor登录，只有能登录某个Casdo
 2. 给这个应用加上下面的回调地址，换成站点的域名：
 
    ```text
-   http://app.example.com/caswaf-handler
+   https://app.example.com/caswaf-handler
    ```
 
-   CasWAF发给Casdoor的是`http://`形式。对于`HTTPS Only`站点，浏览器在返回途中会被转到HTTPS，所以这一条就同时覆盖两种。
+   站点只通过普通HTTP提供时，改用`http://`。CasWAF发给Casdoor的是访客进来时用的协议。
 
 3. 在CasWAF里打开站点，在**Casdoor app**下选择这个应用。列表里是CasWAF所在组织的应用。保存。
 
@@ -24,11 +24,10 @@ description: "在站点前面加一道Casdoor登录，只有能登录某个Casdo
 
 1. 没有`casdoor_access_token` cookie的请求会被跳转到这个应用的Casdoor登录页，并保留访客原来请求的路径。
 2. 访客登录后，Casdoor把他送到`/caswaf-handler`，CasWAF用授权码换取访问令牌，存进`casdoor_access_token` cookie，再跳转到他最初请求的页面。
-3. 之后的每个请求，CasWAF都先用应用的证书校验令牌签名，再检查站点的规则。
+3. 之后的每个请求，CasWAF都先用应用的证书校验令牌签名，再检查站点的规则。令牌过期或校验不通过时，访客会被送去重新登录。
 
 站点后面的应用会随请求收到这个cookie，需要的话可以从令牌里读出用户。
 
 ## 限制
 
-- 令牌过期或校验不通过时，访客看到的是错误页，而不是重新登录。退出Casdoor登录或删除该站点的cookie后即可重新开始。
 - 这项检查只说明访客登录过这个应用。CasWAF里没有按用户或按用户组的规则；请在Casdoor里限制访问。

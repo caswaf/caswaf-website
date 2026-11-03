@@ -18,7 +18,7 @@ CasWAF可以从外部监视站点：按固定间隔请求站点的域名，连�
 - 站点的主域名：`HTTPS Only`用HTTPS，`HTTP`用HTTP，`HTTPS and HTTP`两种都查，其中任一种响应即可。
 - 跟随跳转后，5秒内得到`2xx`响应就算通过。
 - `Inactive`或`Stopped`的站点不检查。
-- `Static Folder`站点不要打开告警：它们从不会被请求，每次都算失败。
+- `Static Folder`站点和`HTTPS and HTTP`站点一样检查。
 
 ## 什么时候发告警
 

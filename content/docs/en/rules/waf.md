@@ -3,7 +3,7 @@ title: "WAF rules"
 description: "Write ModSecurity SecLang rules for CasWAF, run by the Coraza engine: what they can see, which actions count, and examples for SQL injection, XSS and scanners."
 ---
 
-A `WAF` rule holds rules in ModSecurity's SecLang language, the same language as ModSecurity and the OWASP Core Rule Set, run by [Coraza](https://coraza.io), a WAF engine written in Go. Use them for what the simpler rule types cannot express: the query string, cookies, any header, and Coraza's SQL injection and XSS detectors.
+A `WAF` rule holds rules in ModSecurity's SecLang language, the same language as ModSecurity and the OWASP Core Rule Set, run by [Coraza](https://coraza.io), a WAF engine written in Go. Use them for what the simpler rule types cannot express: the query string, the request body, cookies, any header, and Coraza's SQL injection and XSS detectors.
 
 ## Writing one
 
@@ -11,7 +11,7 @@ A `WAF` rule holds rules in ModSecurity's SecLang language, the same language as
 2. Write one or more `SecRule` directives in the expressions. The expressions are joined as written, so keep the whole set in one expression, or end each one with a line break.
 3. Save. CasWAF checks the syntax and refuses a rule set it cannot parse.
 
-Each `SecRule` needs its own `id` and a `phase` of `1` (headers) or `2`. IDs 200000 to 200006 are taken by the base configuration built into CasWAF, `conf/waf.conf`.
+Each `SecRule` needs its own `id` and a `phase` of `1` (headers) or `2`. Keep clear of IDs 200000 to 200099: they belong to the base configuration built into CasWAF, `conf/waf.conf`, and matches in that range are ignored.
 
 ## Which actions count
 
@@ -28,19 +28,21 @@ The reason shown is `blocked by WAF rule: <id>`. The SecLang `status:` action is
 
 ## What the rules see
 
-The request line and the headers: the method, the path, the query string and its arguments (`ARGS`, `ARGS_GET`, `REQUEST_URI`, `QUERY_STRING`), `REQUEST_HEADERS` and `REQUEST_COOKIES`. The request body is not passed to Coraza yet, so `ARGS_POST` and `REQUEST_BODY` are empty; see the [roadmap](../more/roadmap.md).
+The whole request: the method, the path, the query string and its arguments (`ARGS`, `ARGS_GET`, `REQUEST_URI`, `QUERY_STRING`), `REQUEST_HEADERS`, `REQUEST_COOKIES`, and the body up to 12.5 MB (`REQUEST_BODY`, and `ARGS_POST` for forms). JSON and XML bodies are parsed by content type, so their fields are in `ARGS` too. The body is passed on to the application unchanged.
+
+The base configuration's own rules, such as the one for bodies that fail to parse, are left out of the decision: only the rules you write block or allow.
 
 CasWAF builds the rule set again for each request that reaches the rule, which takes well under a millisecond for a handful of rules. Keep WAF rules short and specific: the full OWASP Core Rule Set is not bundled and is too large to run this way.
 
 ## Examples
 
-SQL injection in any query argument, with Coraza's libinjection detector:
+SQL injection in any argument, from the query string or the body, with Coraza's libinjection detector:
 
 ```text
 SecRule ARGS "@detectSQLi" "id:1001,phase:2,deny,msg:'SQL injection'"
 ```
 
-Cross-site scripting in any query argument:
+Cross-site scripting in any argument:
 
 ```text
 SecRule ARGS "@detectXSS" "id:1002,phase:2,deny,msg:'XSS'"

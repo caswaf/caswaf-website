@@ -43,7 +43,9 @@ export const AuthConfig = {
 
 ## Who can sign in
 
-Everyone who can sign in to the Casdoor application can manage every site, certificate and rule in CasWAF; there are no read-only roles yet. Keep the application to the people who run CasWAF: put it in an organization of its own, and turn off sign-up on the application.
+Only the organization's administrators, the users with **Is admin** turned on in Casdoor, can manage CasWAF. Anyone else who signs in to the application sees the console but gets "this operation requires admin privilege" for every page. Every administrator can manage every site, certificate and rule; there are no read-only roles yet.
+
+So turn on **Is admin** for the people who run CasWAF, and for nobody else in that organization. An organization of its own for CasWAF, with sign-up turned off on the application, keeps it simple.
 
 A session lasts a year. Sessions are kept as files in `tmp/` next to the program, or in Redis when `redisEndpoint` is set, which lets several console instances share them.
 

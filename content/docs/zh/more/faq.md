@@ -13,7 +13,7 @@ description: "关于CasWAF的常见问题：替代Nginx、WebSocket、HTTP/2、�
 
 ## 必须用Casdoor吗？
 
-是的，管理界面只能通过Casdoor登录。Casdoor是开源的，很快就能跑起来；它甚至可以是CasWAF后面的站点之一。CasWAF在Casdoor里的应用只给运维CasWAF的人用，因为能登录它的人都能管理CasWAF。
+是的，管理界面只能通过Casdoor登录。Casdoor是开源的，很快就能跑起来；它甚至可以是CasWAF后面的站点之一。只有CasWAF在Casdoor里所在组织的管理员才能管理CasWAF；见[用Casdoor登录](../getting-started/casdoor.md)。
 
 ## 能用哪些数据库？
 

@@ -9,13 +9,11 @@ An `IP` rule matches on the client's address, as CasWAF works it out; behind a l
 
 | Operator | Value | Matches when |
 | --- | --- | --- |
-| `is in` | Addresses and CIDR ranges separated by commas without spaces, IPv4 and IPv6 mixed, such as `203.0.113.7,198.51.100.0/24,2001:db8::/32` | The client is one of them |
-| `is not in` | A single address or range | The client is not it |
+| `is in` | Addresses and CIDR ranges separated by commas, IPv4 and IPv6 mixed, such as `203.0.113.7,198.51.100.0/24,2001:db8::/32` | The client is one of them |
+| `is not in` | The same kind of list | The client is none of them |
 | `is abroad` | Nothing | The client is outside China |
 
 Values are checked when you save, so a mistyped address is refused. The rule matches when any of its expressions matches.
-
-`is not in` compares the client with each value on its own, so with two or more values it matches every request. Give it one value; to let several ranges through and keep everyone else out, use the allow-list pattern below instead.
 
 ## Traffic from abroad
 
@@ -27,11 +25,8 @@ Block it for a site that only serves visitors in China, or attach it with action
 
 **Block a few addresses.** Type `IP`, operator `is in`, value `203.0.113.7,198.51.100.0/24`, action `Block`.
 
-**Allow only the office.** Two rules on the site, in this order:
+**Allow only the office.** Type `IP`, operator `is not in`, value `203.0.113.0/24,2001:db8:1::/48`, action `Block`. Everyone outside those ranges is blocked.
 
-1. Type `IP`, operator `is in`, value `203.0.113.0/24,2001:db8:1::/48`, action `Allow`.
-2. Type `URL Path`, operator `match`, value `^/`, action `Block`.
-
-The first lets the office through and skips the rest; the second blocks everything that is left.
+To let the office skip all other rules of the site as well, put an `Allow` rule with `is in` and the same ranges first.
 
 **Keep search engines in while blocking traffic from abroad.** Put an `Allow` rule for the search engines' published ranges, or a `User-Agent` allow rule, before the `is abroad` block rule.

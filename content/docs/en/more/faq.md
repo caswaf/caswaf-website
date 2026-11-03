@@ -13,7 +13,7 @@ Yes. WebSocket upgrades are passed through to the application, and HTTPS connect
 
 ## Do I need Casdoor?
 
-Yes, the console signs in only through Casdoor. Casdoor is open source and quick to run; it can even be one of the sites behind CasWAF. Keep CasWAF's application in Casdoor to the people who run CasWAF, since everyone who can sign in to it manages CasWAF.
+Yes, the console signs in only through Casdoor. Casdoor is open source and quick to run; it can even be one of the sites behind CasWAF. Only the administrators of CasWAF's organization in Casdoor can manage CasWAF; see [Sign in with Casdoor](../getting-started/casdoor.md).
 
 ## Which databases does it run on?
 

@@ -18,7 +18,7 @@ CasWAF can watch a site from the outside: it requests the site's domain at a fix
 - The site's main domain, over HTTPS for `HTTPS Only`, over HTTP for `HTTP`, and both for `HTTPS and HTTP`, where either answering is enough.
 - A check passes when the response, after following redirects, is a `2xx` within 5 seconds.
 - Sites that are `Inactive` or `Stopped` are not checked.
-- Leave alerts off for `Static Folder` sites: they are never requested and count as failing every time.
+- `Static Folder` sites are checked like `HTTPS and HTTP` ones.
 
 ## When alerts are sent
 

@@ -43,7 +43,7 @@ So a domain already covered by a wildcard certificate named after its registered
 2. It asks Let's Encrypt for an RSA 2048 certificate, answers the challenge, and stores the certificate with its chain in the certificate list, replacing the old one.
 3. If anything fails, it waits an hour before trying that domain again, then two, four, eight, sixteen, and then once a day, which keeps it under Let's Encrypt's rate limits.
 
-While it works, CasWAF replaces the site's **Challenges** with its own token and empties them afterwards, so keep WeChat verification files on a site that does not get automatic certificates.
+CasWAF adds its tokens to the site's **Challenges** and removes only those afterwards, so WeChat verification files and other entries stay.
 
 ## Wildcard certificates
 

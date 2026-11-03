@@ -32,7 +32,7 @@ description: "给CasWAF添加TLS证书，给证书命名以便网关把它们和
 
 ## Provider和密钥
 
-**Provider**（`Aliyun`或`GoDaddy`）、**Account**、**Access key**和**Access secret**保存这个域名的DNS凭据。CasWAF用阿里云的key读取域名的到期时间。Access secret从不回传给浏览器，显示为`***`；保存证书时请重新输入secret，否则保存的值会被替换成`***`。
+**Provider**（`Aliyun`或`GoDaddy`）、**Account**、**Access key**和**Access secret**保存这个域名的DNS凭据。CasWAF用阿里云的key读取域名的到期时间。Access secret从不回传给浏览器，显示为`***`；以`***`保存证书时，会保留已保存的secret。
 
 ## 复制和下载
 

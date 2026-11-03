@@ -11,10 +11,10 @@ A site can require its visitors to sign in through Casdoor before CasWAF forward
 2. Add this redirect URL to that application, with the site's domain:
 
    ```text
-   http://app.example.com/caswaf-handler
+   https://app.example.com/caswaf-handler
    ```
 
-   CasWAF sends Casdoor the `http://` form. For an `HTTPS Only` site the browser is then moved to HTTPS on its way back, so the one entry covers both.
+   Use `http://` instead for a site served over plain HTTP. CasWAF sends Casdoor the scheme the visitor came in on.
 
 3. In CasWAF, open the site and choose the application under **Casdoor app**. The list holds the applications of CasWAF's organization. Save.
 
@@ -24,11 +24,10 @@ Who can get in is decided in Casdoor: the application's organization, whether it
 
 1. A request without the `casdoor_access_token` cookie is redirected to the application's Casdoor login page. The path they asked for is kept.
 2. After they sign in, Casdoor sends them to `/caswaf-handler`, CasWAF exchanges the code for an access token, stores it in the `casdoor_access_token` cookie and redirects them to the page they first asked for.
-3. On every later request CasWAF checks the token's signature with the application's certificate before going on to the site's rules.
+3. On every later request CasWAF checks the token's signature with the application's certificate before going on to the site's rules. When the token has expired or does not verify, the visitor is sent to sign in again.
 
 The application behind the site receives the cookie along with the request, so it can read the user from the token if it wants to.
 
 ## Limits
 
-- When the token has expired or does not verify, the visitor gets an error page instead of a new login. Signing out of Casdoor or deleting the cookie for the site starts over.
 - The check only says the visitor has signed in to the application. There are no per-user or per-group rules in CasWAF; restrict access in Casdoor.

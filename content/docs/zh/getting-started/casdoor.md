@@ -43,7 +43,9 @@ export const AuthConfig = {
 
 ## 谁能登录
 
-凡是能登录这个Casdoor应用的人，都能管理CasWAF里的所有站点、证书和规则；目前还没有只读角色。所以这个应用只给运维CasWAF的人用：把它放在单独的组织里，并关掉应用的注册。
+只有组织的管理员，即在Casdoor里打开了**Is admin**的用户，才能管理CasWAF。其他人登录这个应用后能看到管理界面，但每个页面都会提示“this operation requires admin privilege”。每个管理员都能管理所有站点、证书和规则；目前还没有只读角色。
+
+所以只给运维CasWAF的人打开**Is admin**，这个组织里的其他人都不要打开。给CasWAF单独建一个组织，并关掉应用的注册，管理起来最简单。
 
 一次登录会话有效一年。会话以文件形式保存在程序旁边的`tmp/`里；设置了`redisEndpoint`时保存在Redis里，这样多个管理界面实例可以共用会话。
 

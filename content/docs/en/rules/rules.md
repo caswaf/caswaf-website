@@ -14,8 +14,9 @@ Rules decide what happens to a request before it is forwarded. A rule is defined
 | `URL Path` | The path, without the query string | [User-Agent and URL path](./user-agent-and-path.md) |
 | `IP Rate Limiting` | Requests per second from one address | [Rate limiting](./rate-limiting.md) |
 | `WAF` | ModSecurity SecLang rules, run by Coraza | [WAF rules](./waf.md) |
+| `Compound` | Other rules, combined with `and` and `or` | Below |
 
-A rule holds one or more **Expressions**. For `IP`, `User-Agent` and `URL Path`, the rule matches when any of its expressions matches; to require several conditions at once, see the note on compound rules below.
+A rule holds one or more **Expressions**. For `IP`, `User-Agent` and `URL Path`, the rule matches when any of its expressions matches; to require several conditions at once, use a compound rule.
 
 ## Actions
 
@@ -51,4 +52,12 @@ Changes to rules and to a site's list take effect within a few seconds. Add and 
 
 ## Compound rules
 
-The rule editor also offers a `Compound` type, meant to combine other rules with `and` and `or`. It is being reworked: today a compound rule counts every request as a match, so its action applies to all traffic. Do not attach one to a site yet; see the [roadmap](../more/roadmap.md).
+A `Compound` rule matches when a combination of other rules matches, and then applies its own action. Each expression names one rule, as `<owner>/<name>`, with a **Logic** of `begin` for the first, then `and` or `or`. The rules it names only count as matching or not; their own actions are ignored.
+
+`and` binds tighter than `or`, so `A and B or C and D` means `(A and B) or (C and D)`. For example, to send visitors from abroad who open the login page through a CAPTCHA:
+
+1. An `IP` rule `admin/abroad`, operator `is abroad`.
+2. A `URL Path` rule `admin/login-page`, operator `match`, value `^/login`.
+3. A `Compound` rule with `begin admin/abroad` and `and admin/login-page`, action `CAPTCHA`. Attach only this one to the site.
+
+A compound rule can name other compound rules, up to eight levels deep. One that ends up naming itself answers with an error instead of looping.

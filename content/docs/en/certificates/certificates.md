@@ -32,7 +32,7 @@ The list shows when each certificate expires. **Domain expire** shows when the d
 
 ## Provider and keys
 
-**Provider** (`Aliyun` or `GoDaddy`), **Account**, **Access key** and **Access secret** hold DNS credentials for the domain. CasWAF uses the Alibaba Cloud key to read the domain's expiry. The access secret is never sent back to the browser and shows as `***`; when you save the certificate, type the secret in again, or the stored one is replaced by `***`.
+**Provider** (`Aliyun` or `GoDaddy`), **Account**, **Access key** and **Access secret** hold DNS credentials for the domain. CasWAF uses the Alibaba Cloud key to read the domain's expiry. The access secret is never sent back to the browser and shows as `***`; saving the certificate with `***` keeps the stored secret.
 
 ## Copying and downloading
 

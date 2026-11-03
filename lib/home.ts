@@ -73,7 +73,7 @@ const text = {
       },
       {
         title: 'Built in the open',
-        body: 'Next: deploying any application from Git, compound rules, request bodies in WAF rules, and wildcard certificates from the console.',
+        body: 'Next: deploying any application from Git, wildcard certificates from the console, roles in the console, and richer request records.',
       },
     ],
     roadmap: 'See the roadmap',
@@ -149,7 +149,7 @@ const text = {
       },
       {
         title: '公开开发',
-        body: '接下来要做：从Git部署任意应用，组合规则，WAF规则检查请求体，在管理界面里申请通配符证书。',
+        body: '接下来要做：从Git部署任意应用，在管理界面里申请通配符证书，管理界面的角色权限，更详细的请求记录。',
       },
     ],
     roadmap: '查看路线图',
