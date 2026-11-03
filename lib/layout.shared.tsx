@@ -69,8 +69,8 @@ export const translations = i18n
   });
 
 const navText = {
-  en: { docs: 'Docs', compare: 'Compare', roadmap: 'Roadmap', community: 'Community' },
-  zh: { docs: '文档', compare: '对比', roadmap: '路线图', community: '社区' },
+  en: { docs: 'Docs', compare: 'Compare', blog: 'Blog', roadmap: 'Roadmap', community: 'Community' },
+  zh: { docs: '文档', compare: '对比', blog: '博客', roadmap: '路线图', community: '社区' },
 };
 
 const community = [
@@ -94,6 +94,7 @@ export function baseOptions(lang: string): BaseLayoutProps {
     links: [
       { text: text.docs, url: `/${lang}/docs`, active: 'nested-url' },
       { text: text.compare, url: `/${lang}/compare`, active: 'nested-url' },
+      { text: text.blog, url: `/${lang}/blog`, active: 'nested-url' },
       { text: text.roadmap, url: `/${lang}/docs/more/roadmap` },
       {
         type: 'menu',

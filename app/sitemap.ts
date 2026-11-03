@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { execSync } from 'node:child_process';
+import { getPosts } from '@/lib/blog';
 import { comparePages } from '@/lib/compare';
 import { i18n } from '@/lib/i18n';
 import { sitemapEntry } from '@/lib/seo';
@@ -41,5 +42,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       sitemapEntry(lang, `/compare/${page.slug}`, undefined, lastModified('lib/compare.ts')),
     ),
   ]);
-  return [...home, ...docs, ...compare];
+  const blog = i18n.languages.flatMap((lang) => [
+    sitemapEntry(lang, '/blog', undefined, lastModified('lib/blog.ts')),
+    ...getPosts(lang).map((post) =>
+      sitemapEntry(lang, `/blog/${post.slugs[0]}`, undefined, lastModified(`content/blog/${post.path}`)),
+    ),
+  ]);
+  return [...home, ...docs, ...compare, ...blog];
 }

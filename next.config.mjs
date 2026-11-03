@@ -38,7 +38,7 @@ function redirects() {
   }
   rules.push({ source: '/:lang(fr|de|ko|ru|ja)', destination: '/en', permanent: true });
   rules.push({ source: '/:lang(fr|de|ko|ru|ja)/:path*', destination: '/en', permanent: true });
-  for (const page of ['blog', 'help', 'users', 'pdf']) {
+  for (const page of ['help', 'users', 'pdf']) {
     rules.push({ source: `/${page}/:path*`, destination: '/en', permanent: true });
     rules.push({ source: `/zh/${page}/:path*`, destination: '/zh', permanent: true });
   }

@@ -1,3 +1,4 @@
+import { getPosts } from '@/lib/blog';
 import { comparePages } from '@/lib/compare';
 import { siteUrl } from '@/lib/shared';
 import { docsLlms } from '@/lib/source';
@@ -9,6 +10,9 @@ export async function GET() {
   const compare = comparePages.en
     .map((page) => `- [${page.h1}](${siteUrl}/en/compare/${page.slug}): ${page.description}`)
     .join('\n');
+  const posts = getPosts('en')
+    .map((post) => `- [${post.data.title}](${siteUrl}/en/blog/${post.slugs[0]}): ${post.data.description}`)
+    .join('\n');
 
   return new Response(`${index}
 
@@ -16,5 +20,10 @@ export async function GET() {
 
 - [Compare CasWAF with other reverse proxies and WAFs](${siteUrl}/en/compare): SafeLine, ModSecurity, BunkerWeb and Nginx, one page each.
 ${compare}
+
+# Blog
+
+- [CasWAF blog](${siteUrl}/en/blog): notes on firewall rules, certificates, single sign-on and reverse proxies.
+${posts}
 `);
 }
