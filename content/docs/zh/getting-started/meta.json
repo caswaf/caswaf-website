@@ -1,0 +1,10 @@
+{
+  "title": "入门",
+  "pages": [
+    "introduction",
+    "quickstart",
+    "casdoor",
+    "docker"
+  ],
+  "defaultOpen": true
+}

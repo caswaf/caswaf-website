@@ -1,0 +1,10 @@
+{
+  "title": "站点",
+  "pages": [
+    "sites",
+    "https",
+    "redirects",
+    "login",
+    "alerts"
+  ]
+}

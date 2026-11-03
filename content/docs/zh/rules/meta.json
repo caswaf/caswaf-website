@@ -1,0 +1,11 @@
+{
+  "title": "规则",
+  "pages": [
+    "rules",
+    "ip",
+    "user-agent-and-path",
+    "rate-limiting",
+    "waf",
+    "captcha"
+  ]
+}

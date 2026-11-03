@@ -1,0 +1,13 @@
+{
+  "title": "Docs",
+  "pages": [
+    "index",
+    "getting-started",
+    "sites",
+    "certificates",
+    "rules",
+    "monitoring",
+    "operations",
+    "more"
+  ]
+}

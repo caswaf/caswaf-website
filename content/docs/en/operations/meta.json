@@ -1,0 +1,9 @@
+{
+  "title": "Operations",
+  "pages": [
+    "configuration",
+    "client-ip",
+    "nodes",
+    "upgrading"
+  ]
+}

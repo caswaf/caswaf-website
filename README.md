@@ -1,137 +1,38 @@
-# [caswaf.org](https://caswaf.org) [![Build and Deploy](https://github.com/casbin/caswaf-website/actions/workflows/master.yml/badge.svg)](https://github.com/casbin/caswaf-website/actions/workflows/master.yml)
+# CasWAF Website
 
-The configuration and documentation of caswaf website: <https://caswaf.org/>.
+The website and documentation of [CasWAF](https://github.com/caswaf/caswaf), the open-source reverse proxy and web application firewall, in English and Chinese, built with [Fumadocs](https://fumadocs.dev) on Next.js. It is served at https://caswaf.org.
 
-caswaf website is built using [Docusaurus](https://docusaurus.io/), you can get the PDF at [caswaf.org/pdf](https://caswaf.org/pdf) or [GitHub Action](https://github.com/casbin/caswaf-website/actions/workflows/master.yml).
+## Writing the docs
 
-## Get Started
+The manual is in `content/docs/`, one folder per language with the same chapters and file names in each, so `rules/waf.md` is the same page in English and Chinese. Change both languages in the same pull request.
 
-### Requirements
+- Each page starts with frontmatter. `title` is the heading shown on the page, so the body has no `# Heading` of its own. `description` is a plain-text summary for search results and the preview image.
+- `index.md` is a language's front page. Each chapter folder has a `meta.json` holding its title and page order, and the language folder's own `meta.json` lists the chapters.
+- Link to another page by its file, relatively, such as `[IP rules](../rules/ip.md)`; the site turns that into the page URL.
+- Describe what the code on CasWAF's `master` does today. Say so where a setting has no effect yet, and put plans on the roadmap page.
 
-1. [Git](https://git-scm.com/downloads)
-2. [Node.js](https://nodejs.org/en/download/)：v16.14 or above
-3. [Yarn](https://classic.yarnpkg.com/en/docs/install): please use Yarn 1
-
-### Running Locally
-
-1. `git clone https://github.com/casbin/caswaf-website.git`
-2. `cd caswaf-website`
-3. `yarn`: install dependencies.
-4. `yarn start`: starting the development server.
-
-## Contributing
-
-You can contribute to the documentation site in different ways: [Documentation Writing](#documentation-writing), [Translation](#translation), [Website Development](#website-development).
-
-### Documentation Writing
-
-For the configuration of the sidebar, you can refer to [Sidebar](https://docusaurus.io/docs/sidebar).
-
-For the features that you may use when writing documents, please refer to [Markdown Features](https://docusaurus.io/docs/markdown-features).
-
-A standard document should look like this:
-
-````md
----
-title: Title
-description: description
-keywords: [keyword1, keyword2]
-authors: [GitHub username]
----
-
-## Headers
-
-Only h2 and h3 will be in the TOC by default, so h1 is not recommended to use.
-
-### h3
-
-content
-
-#### h4
-
-content
-
-````
-
-We use [markdownlint-cli](https://github.com/igorshubovych/markdownlint-cli) to lint the markdown and mdx files, you can use the following command to fix basic errors and get a list of document issues:
+## Run it
 
 ```bash
-yarn lint:md
+npm install
+npm run dev
 ```
 
-If you write docs using VSCode, Sublime, or Vim/Neovim, you can install the [extension](https://github.com/DavidAnson/markdownlint#related) to get better lint experience.
+Then open http://localhost:3000. `/` sends the visitor to `/en` or `/zh` by their browser language.
 
-#### Caution
+## Layout
 
-##### Admonitions
+| Path | What it is |
+| --- | --- |
+| `app/[lang]/(home)`, `lib/home.ts` | The landing page and its copy in both languages |
+| `app/[lang]/docs` | The manual |
+| `app/[lang]/og` | Social preview images, one per page and one for the home page |
+| `app/sitemap.ts`, `app/robots.ts`, `lib/seo.ts` | The sitemap, robots.txt, and each page's canonical URL and language alternates |
+| `app/[lang]/llms.mdx`, `app/llms.txt`, `app/llms-full.txt` | The manual as Markdown, for agents; append `.md` to any page URL to get it |
+| `app/api/search` | Search over both languages |
+| `lib/layout.shared.tsx`, `components/site-footer.tsx` | Navigation, footer, and the Chinese strings for Fumadocs' own UI |
+| `next.config.mjs` | Redirects from the URLs of the old Docusaurus site |
 
-You can add [Admonitions](https://docusaurus.io/docs/markdown-features/admonitions) in the documentation, but please leave two blank lines like this:
+## Analytics
 
-```md
-:::info Title
-
-Title is optional
-
-:::
-```
-
-##### JSX
-
-You can use JSX in documents, such as the [Tabs](https://docusaurus.io/docs/markdown-features/tabs) component provided by Docusaurus, but to prevent Crowdin from breaking the code ([mdx-solutions](https://docusaurus.io/docs/i18n/crowdin#mdx-solutions)), please wrap the JSX code:
-
-````md
-```mdx-code-block
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-```
-
-```mdx-code-block
-<Tabs>
-<TabItem value="go" label="Go">
-```
-
-content
-
-```mdx-code-block
-</TabItem>
-<TabItem value="java" label="Java">
-```
-
-content
-
-```mdx-code-block
-</TabItem>
-</Tabs>
-```
-
-````
-
-### Translation
-
-[Crowdin](https://crowdin.com/project/caswaf-website) and [Docusaurus i18n](https://docusaurus.io/docs/i18n/introduction) is used for caswaf website's translation.
-
-Please note that some sentences do not require translation or need to be translated according to our regulations:
-
-- Please do not translate strings like `:::note`, `:::tip`, wrong translation may cause typographical error([casdoor-website#305](https://github.com/casdoor/casdoor-website/issues/305)).
-
-- You may see some sentences containing `{}`, like:
-
-```text
-At our {repoLink}, browse and submit {issueLink} or {prLink} for bugs you find or any new features you may want implemented.
-```
-
-Please do not translate `{repoLink}` or `{issueLink}` or any similar words, they are [interpolation placeholders](https://docusaurus.io/docs/docusaurus-core#translate-props).
-
-- Please don't translate sentences like `authors: [caswaf]`.
-
-### Website Development
-
-See [Creating Pages](https://docusaurus.io/docs/creating-pages) to learn how to create a page.
-
-See [Styling and Layout](https://docusaurus.io/docs/styling-layout) to learn how to modify styles.
-
-See [Swizzling](https://docusaurus.io/docs/swizzling) to learn how to modify Docusaurus built-in components.
-
-## LICENSE
-
-[Apache-2.0 license](./LICENSE).
+The site reads its Google Analytics and Baidu Tongji IDs from the environment variables `NEXT_PUBLIC_GA_ID` and `NEXT_PUBLIC_BAIDU_TONGJI_ID`, set in the deployment. Neither is in the code, so a fork reports to nobody, and with neither set no tracker is loaded.
