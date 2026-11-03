@@ -76,6 +76,9 @@ const text = {
         body: 'Next: deploying any application from Git, wildcard certificates from the console, roles in the console, and richer request records.',
       },
     ],
+    compareTitle: 'How it compares',
+    compareBody: 'One page per tool it replaces or gets weighed against.',
+    compareAll: 'All comparisons',
     roadmap: 'See the roadmap',
   },
   zh: {
@@ -152,6 +155,9 @@ const text = {
         body: '接下来要做：从Git部署任意应用，在管理界面里申请通配符证书，管理界面的角色权限，更详细的请求记录。',
       },
     ],
+    compareTitle: '和别的工具比',
+    compareBody: '每个比较对象一页，只写会影响选择的地方。',
+    compareAll: '全部对比',
     roadmap: '查看路线图',
   },
 };

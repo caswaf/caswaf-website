@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: PageProps<'/[lang]/compare/[s
   const page = getComparePage(lang, slug);
   if (!page) notFound();
 
-  const image = `/${lang}/og/image.png`;
+  const image = `/${lang}/og/compare/${slug}`;
   return {
     title: { absolute: page.title },
     description: page.description,

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { ArrowRight, ChevronDown, ChevronRight, Globe, Server } from 'lucide-react';
 import { InstallCommand } from '@/components/install-command';
 import { SiteFooter } from '@/components/site-footer';
+import { getComparePages } from '@/lib/compare';
 import { getText } from '@/lib/home';
 import { alternates } from '@/lib/seo';
 import { appName, repoUrl, siteUrl } from '@/lib/shared';
@@ -165,6 +166,36 @@ export default async function HomePage({ params }: PageProps<'/[lang]'>) {
               </Link>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="mx-auto w-full max-w-6xl px-4 py-14">
+        <h2 className="mb-2 text-center text-2xl font-semibold tracking-tight">{t.compareTitle}</h2>
+        <p className="mb-8 text-center text-sm text-fd-muted-foreground">{t.compareBody}</p>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {getComparePages(lang).map((page) => (
+            <Link
+              key={page.slug}
+              href={`/${lang}/compare/${page.slug}`}
+              className="group flex flex-col rounded-xl border bg-fd-card p-5 transition-colors hover:border-fd-primary/50"
+            >
+              <h3 className="font-semibold">{page.name}</h3>
+              <p className="mt-2 flex-1 text-sm text-fd-muted-foreground">{page.summary}</p>
+              <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-fd-primary">
+                {t.more}
+                <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
+              </span>
+            </Link>
+          ))}
+        </div>
+        <div className="mt-8 flex justify-center">
+          <Link
+            href={`/${lang}/compare`}
+            className="inline-flex items-center gap-2 rounded-lg border bg-fd-card px-5 py-2.5 text-sm font-medium transition-colors hover:bg-fd-accent"
+          >
+            {t.compareAll}
+            <ArrowRight className="size-4" />
+          </Link>
         </div>
       </section>
 

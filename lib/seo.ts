@@ -16,6 +16,15 @@ export function alternates(lang: string, path: string, langs: readonly string[] 
   return { canonical: `${siteUrl}/${lang}${path}`, languages: languages(path, langs) };
 }
 
-export function sitemapEntry(lang: string, path: string, langs: readonly string[] = i18n.languages): MetadataRoute.Sitemap[number] {
-  return { url: `${siteUrl}/${lang}${path}`, alternates: { languages: languages(path, langs) } };
+export function sitemapEntry(
+  lang: string,
+  path: string,
+  langs: readonly string[] = i18n.languages,
+  lastModified?: Date,
+): MetadataRoute.Sitemap[number] {
+  return {
+    url: `${siteUrl}/${lang}${path}`,
+    alternates: { languages: languages(path, langs) },
+    ...(lastModified ? { lastModified } : {}),
+  };
 }
