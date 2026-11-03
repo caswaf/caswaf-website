@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { execSync } from 'node:child_process';
-import { getPosts } from '@/lib/blog';
+import { getPosts, postExists } from '@/lib/blog';
 import { comparePages } from '@/lib/compare';
 import { i18n } from '@/lib/i18n';
 import { sitemapEntry } from '@/lib/seo';
@@ -44,9 +44,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ]);
   const blog = i18n.languages.flatMap((lang) => [
     sitemapEntry(lang, '/blog', undefined, lastModified('lib/blog.ts')),
-    ...getPosts(lang).map((post) =>
-      sitemapEntry(lang, `/blog/${post.slugs[0]}`, undefined, lastModified(`content/blog/${post.path}`)),
-    ),
+    ...getPosts(lang).map((post) => {
+      // Posts are not translated one to one; only link the languages this one exists in.
+      const langs = i18n.languages.filter((l) => postExists(l, post.slugs[0]));
+      return sitemapEntry(lang, `/blog/${post.slugs[0]}`, langs, lastModified(`content/blog/${post.path}`));
+    }),
   ]);
   return [...home, ...docs, ...compare, ...blog];
 }

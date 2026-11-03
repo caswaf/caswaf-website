@@ -2,7 +2,8 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { notFound } from 'next/navigation';
 import { generateOGImage } from 'fumadocs-ui/og';
-import { blogSource } from '@/lib/blog';
+import { blogSource, getPosts, postExists } from '@/lib/blog';
+import { i18n } from '@/lib/i18n';
 import { appName } from '@/lib/shared';
 
 export const revalidate = false;
@@ -10,7 +11,7 @@ export const revalidate = false;
 export async function GET(_req: Request, { params }: RouteContext<'/[lang]/og/blog/[slug]'>) {
   const { lang, slug } = await params;
   const page = blogSource.getPage([slug], lang);
-  if (!page) notFound();
+  if (!page || !postExists(lang, slug)) notFound();
 
   // Longer text runs into the footer of the card; a whole sentence reads better than a cut word.
   const description = page.data.description ?? '';
@@ -31,5 +32,5 @@ export async function GET(_req: Request, { params }: RouteContext<'/[lang]/og/bl
 }
 
 export function generateStaticParams() {
-  return blogSource.getPages().map((page) => ({ lang: page.locale, slug: page.slugs[0] }));
+  return i18n.languages.flatMap((lang) => getPosts(lang).map((post) => ({ lang, slug: post.slugs[0] })));
 }

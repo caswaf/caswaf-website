@@ -3,7 +3,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getMDXComponents } from '@/components/mdx';
 import { SiteFooter } from '@/components/site-footer';
-import { blogSource, formatDate, getBlogText, postDate } from '@/lib/blog';
+import { blogSource, formatDate, getBlogText, postDate, postExists } from '@/lib/blog';
+import { i18n } from '@/lib/i18n';
 import { alternates } from '@/lib/seo';
 import { appName, siteUrl } from '@/lib/shared';
 
@@ -14,13 +15,14 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<'/[lang]/blog/[slug]'>): Promise<Metadata> {
   const { lang, slug } = await params;
   const page = blogSource.getPage([slug], lang);
-  if (!page) notFound();
+  if (!page || !postExists(lang, slug)) notFound();
 
   const image = `/${lang}/og/blog/${slug}`;
+  const langs = i18n.languages.filter((l) => postExists(l, slug));
   return {
     title: { absolute: `${page.data.title} | ${appName}` },
     description: page.data.description,
-    alternates: alternates(lang, `/blog/${slug}`),
+    alternates: alternates(lang, `/blog/${slug}`, langs),
     openGraph: {
       type: 'article',
       siteName: appName,
@@ -42,7 +44,7 @@ export async function generateMetadata({ params }: PageProps<'/[lang]/blog/[slug
 export default async function BlogPostPage({ params }: PageProps<'/[lang]/blog/[slug]'>) {
   const { lang, slug } = await params;
   const page = blogSource.getPage([slug], lang);
-  if (!page) notFound();
+  if (!page || !postExists(lang, slug)) notFound();
 
   const MDX = page.data.body;
   const t = getBlogText(lang);
@@ -70,7 +72,7 @@ export default async function BlogPostPage({ params }: PageProps<'/[lang]/blog/[
         </Link>
         <h1 className="mt-4 text-3xl font-bold tracking-tight text-balance sm:text-4xl">{page.data.title}</h1>
         <p className="mt-3 text-sm text-fd-muted-foreground">
-          {formatDate(date, lang)}，{t.by}
+          {formatDate(date, lang)}{lang === 'zh' ? '，' : ', '}{t.by}
         </p>
         <div className="prose mt-8 max-w-none">
           <MDX components={getMDXComponents()} />

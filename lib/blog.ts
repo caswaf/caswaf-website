@@ -1,6 +1,8 @@
 import { loader } from 'fumadocs-core/source';
 import { metaSchema, pageSchema } from 'fumadocs-core/source/schema';
 import { defineDocs } from 'fumadocs-mdx/macro';
+import fs from 'node:fs';
+import path from 'node:path';
 import { i18n } from './i18n';
 
 // Posts live in content/blog/<lang>/<yyyy-mm-dd>-<slug>.md; the date is in the file name,
@@ -22,12 +24,21 @@ export function postDate(slug: string): Date | undefined {
   return match ? new Date(`${match[1]}-${match[2]}-${match[3]}T00:00:00Z`) : undefined;
 }
 
+// The loader falls back to the default language for missing translations, so ask the
+// filesystem whether a post really exists in a language.
+export function postExists(lang: string, slug: string): boolean {
+  return fs.existsSync(path.join(process.cwd(), 'content/blog', lang, `${slug}.md`));
+}
+
 export function getPosts(lang: string) {
-  return blogSource.getPages(lang).sort((a, b) => {
-    const left = postDate(a.slugs[0])?.getTime() ?? 0;
-    const right = postDate(b.slugs[0])?.getTime() ?? 0;
-    return right - left;
-  });
+  return blogSource
+    .getPages(lang)
+    .filter((post) => postExists(lang, post.slugs[0]))
+    .sort((a, b) => {
+      const left = postDate(a.slugs[0])?.getTime() ?? 0;
+      const right = postDate(b.slugs[0])?.getTime() ?? 0;
+      return right - left;
+    });
 }
 
 export function formatDate(date: Date | undefined, lang: string): string {
@@ -47,7 +58,7 @@ export const blogText = {
     lead: 'Notes on running CasWAF and the pieces around it: firewall rules, certificates, single sign-on and the parts of a reverse proxy that usually take a weekend.',
     read: 'Read the post',
     back: 'All posts',
-    by: 'By The Casbin Authors',
+    by: 'by The Casbin Authors',
   },
   zh: {
     title: '博客',
