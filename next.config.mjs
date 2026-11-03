@@ -42,6 +42,14 @@ function redirects() {
     rules.push({ source: `/${page}/:path*`, destination: '/en', permanent: true });
     rules.push({ source: `/zh/${page}/:path*`, destination: '/zh', permanent: true });
   }
+  // The root was indexed as https://caswaf.org/ before the rewrite; a permanent redirect passes its signals to /en.
+  rules.push({ source: '/', destination: '/en', permanent: true });
+  // Category indexes of the old site that the map above does not know go to the docs index instead of a 404.
+  rules.push({ source: '/docs/category', destination: '/en/docs', permanent: true });
+  rules.push({ source: '/docs/category/:path*', destination: '/en/docs', permanent: true });
+  rules.push({ source: '/zh/docs/category', destination: '/zh/docs', permanent: true });
+  rules.push({ source: '/zh/docs/category/:path*', destination: '/zh/docs', permanent: true });
+  rules.push({ source: '/:lang(fr|de|ko|ru|ja)/docs/category/:path*', destination: '/en/docs', permanent: true });
   return rules;
 }
 
