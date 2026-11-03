@@ -18,8 +18,8 @@ export async function GET(_req: Request, { params }: RouteContext<'/[lang]/og/im
     title: t.title,
     description: t.subtitle,
     site: appName,
-    primaryColor: 'rgba(46, 204, 113, 0.35)',
-    primaryTextColor: 'rgb(127, 197, 232)',
+    primaryColor: 'rgba(255, 122, 69, 0.35)',
+    primaryTextColor: 'rgb(255, 193, 94)',
   });
 }
 
