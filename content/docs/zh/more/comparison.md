@@ -5,6 +5,8 @@ description: "CasWAF与Nginx、Caddy、Nginx Proxy Manager、BunkerWeb和SafeLin
 
 CasWAF和反向代理处在同一个位置，并承担了Web应用防火墙的一部分工作。这一页把它和人们通常拿来比较的工具放在一起。其他工具也在变化，做决定前请查看它们自己的文档。
 
+一次只和一个工具比、写得更细的页面：[SafeLine（雷池）](/zh/compare/safeline)、[ModSecurity](/zh/compare/modsecurity)、[BunkerWeb](/zh/compare/bunkerweb)、[Nginx](/zh/compare/nginx)。
+
 ## 一览
 
 | | 配置方式 | WAF | HTTPS证书 | 许可证 |

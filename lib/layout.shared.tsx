@@ -69,8 +69,8 @@ export const translations = i18n
   });
 
 const navText = {
-  en: { docs: 'Docs', roadmap: 'Roadmap', community: 'Community' },
-  zh: { docs: '文档', roadmap: '路线图', community: '社区' },
+  en: { docs: 'Docs', compare: 'Compare', roadmap: 'Roadmap', community: 'Community' },
+  zh: { docs: '文档', compare: '对比', roadmap: '路线图', community: '社区' },
 };
 
 const community = [
@@ -93,6 +93,7 @@ export function baseOptions(lang: string): BaseLayoutProps {
     },
     links: [
       { text: text.docs, url: `/${lang}/docs`, active: 'nested-url' },
+      { text: text.compare, url: `/${lang}/compare`, active: 'nested-url' },
       { text: text.roadmap, url: `/${lang}/docs/more/roadmap` },
       {
         type: 'menu',
@@ -113,6 +114,7 @@ export function footerLinks(lang: string) {
         { text: zh ? '介绍' : 'Introduction', url: `/${lang}/docs/getting-started/introduction` },
         { text: zh ? '快速上手' : 'Quick start', url: `/${lang}/docs/getting-started/quickstart` },
         { text: zh ? '规则' : 'Rules', url: `/${lang}/docs/rules/rules` },
+        { text: zh ? '对比' : 'Compare', url: `/${lang}/compare` },
         { text: zh ? '路线图' : 'Roadmap', url: `/${lang}/docs/more/roadmap` },
       ],
     },

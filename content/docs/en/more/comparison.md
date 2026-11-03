@@ -5,6 +5,8 @@ description: "CasWAF next to Nginx, Caddy, Nginx Proxy Manager, BunkerWeb and Sa
 
 CasWAF sits in the same place as a reverse proxy, and does part of the job of a web application firewall. This page sets it next to the tools people usually weigh it against. The others change too, so check their own documentation before deciding.
 
+One tool at a time, with more detail: [SafeLine](/en/compare/safeline), [ModSecurity](/en/compare/modsecurity), [BunkerWeb](/en/compare/bunkerweb) and [Nginx](/en/compare/nginx).
+
 ## At a glance
 
 | | Configured in | WAF | HTTPS certificates | License |
