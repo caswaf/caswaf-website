@@ -50,7 +50,28 @@ function redirects() {
   rules.push({ source: '/zh/docs/category', destination: '/zh/docs', permanent: true });
   rules.push({ source: '/zh/docs/category/:path*', destination: '/zh/docs', permanent: true });
   rules.push({ source: '/:lang(fr|de|ko|ru|ja)/docs/category/:path*', destination: '/en/docs', permanent: true });
+  // Any other path without a language goes to the visitor's language, as Fumadocs' i18n middleware did, but without running a function.
+  rules.push({ source: unprefixed, has: prefersZh, destination: '/zh/:path', permanent: false });
+  rules.push({ source: unprefixed, destination: '/en/:path', permanent: false });
   return rules;
+}
+
+const unprefixed = '/:path((?!(?:en|zh)(?:/|$)|api(?:/|$)|_next/|_vercel/|.*\\.(?:png|jpe?g|gif|svg|ico|webp|txt|xml)$).+)';
+const prefersZh = [{ type: 'header', key: 'accept-language', value: 'zh(.*)' }];
+
+// A docs page is also served as Markdown, at `<page>.md` or when the request prefers `text/markdown`.
+function rewrites() {
+  const markdown = '/:lang/llms.mdx/docs/:path*/content.md';
+  return {
+    beforeFiles: [
+      { source: '/:lang(en|zh)/docs/:path*.md', destination: markdown },
+      {
+        source: '/:lang(en|zh)/docs/:path*',
+        has: [{ type: 'header', key: 'accept', value: '(.*)text/markdown(.*)' }],
+        destination: markdown,
+      },
+    ],
+  };
 }
 
 /** @type {import('next').NextConfig} */
@@ -59,6 +80,7 @@ const config = {
   // The images are a few small logos; Vercel's image optimization is billed per image and fails with 402 when the quota runs out.
   images: { unoptimized: true },
   redirects: async () => redirects(),
+  rewrites: async () => rewrites(),
 };
 
 export default withMDX(config);

@@ -8,6 +8,8 @@ import { i18n } from '@/lib/i18n';
 import { alternates } from '@/lib/seo';
 import { appName, siteUrl } from '@/lib/shared';
 
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return blogSource.getPages().map((page) => ({ lang: page.locale, slug: page.slugs[0] }));
 }

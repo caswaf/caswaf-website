@@ -7,6 +7,8 @@ import { getComparePage, getComparePages, getCompareText } from '@/lib/compare';
 import { alternates } from '@/lib/seo';
 import { appName, siteUrl } from '@/lib/shared';
 
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return (['en', 'zh'] as const).flatMap((lang) =>
     getComparePages(lang).map((page) => ({ lang, slug: page.slug })),

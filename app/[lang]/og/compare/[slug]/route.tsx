@@ -34,6 +34,8 @@ export async function GET(_req: Request, { params }: RouteContext<'/[lang]/og/co
   });
 }
 
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return (['en', 'zh'] as const).flatMap((lang) =>
     getComparePages(lang).map((page) => ({ lang, slug: page.slug })),

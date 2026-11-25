@@ -59,6 +59,8 @@ function RelativeLink(lang: string, pagePath: string) {
   };
 }
 
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   return source.generateParams('slug', 'lang');
 }

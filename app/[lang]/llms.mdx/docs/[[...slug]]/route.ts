@@ -16,6 +16,8 @@ export async function GET(_req: Request, { params }: RouteContext<'/[lang]/llms.
   });
 }
 
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return source.getPages().map((page) => ({
     lang: page.locale,

@@ -29,6 +29,8 @@ export async function GET(_req: Request, { params }: RouteContext<'/[lang]/og/do
   });
 }
 
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return source.getPages().map((page) => ({
     lang: page.locale,

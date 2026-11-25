@@ -31,6 +31,8 @@ export async function GET(_req: Request, { params }: RouteContext<'/[lang]/og/bl
   });
 }
 
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return i18n.languages.flatMap((lang) => getPosts(lang).map((post) => ({ lang, slug: post.slugs[0] })));
 }

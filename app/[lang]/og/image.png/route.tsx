@@ -23,6 +23,8 @@ export async function GET(_req: Request, { params }: RouteContext<'/[lang]/og/im
   });
 }
 
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return i18n.languages.map((lang) => ({ lang }));
 }
